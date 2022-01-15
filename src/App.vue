@@ -1,17 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    {{welcome}}
+    companies: {{companies}}
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import axios from 'axios';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+
+  },
+  mounted() {
+    axios(`http://localhost:8080/hello?name=${this.name}`).then((res) => {
+      this.welcome = res.data;
+    });
+
+    axios('http://localhost:8080/companies').then((res) => {
+      console.log(res);
+      this.companies = res.data;
+    });
+  },
+  data() {
+    return {
+      welcome: '',
+      name: 'Leachim',
+      companies: [],
+    };
   },
 };
 </script>
