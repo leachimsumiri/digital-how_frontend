@@ -53,7 +53,8 @@ export default {
   methods: {
     resolveCompanyLogoPath(companyDescription) {
       const RE = / /g;
-      return `/companies/logos/${companyDescription.replace(RE, '_').toLowerCase()}.png`;
+      return `/companies/logos/${companyDescription.replace(RE, '_')
+        .toLowerCase()}.png`;
     },
   },
   data() {

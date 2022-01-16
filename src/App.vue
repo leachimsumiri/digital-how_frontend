@@ -14,21 +14,24 @@ export default {
     Companies,
   },
   mounted() {
-    axios('http://localhost:8080/companies').then((res) => {
-      this.companies = res.data;
-      console.log(this.companies);
-      this.companiesTableBusy = false;
-    });
+    axios('http://localhost:8080/companies')
+      .then((res) => {
+        this.companies = res.data;
+        console.log(this.companies);
+        this.companiesTableBusy = false;
+      });
 
-    axios('http://localhost:8080/studios').then((res) => {
-      this.studios = res.data;
-      console.log(this.studios);
-    });
+    axios('http://localhost:8080/studios')
+      .then((res) => {
+        this.studios = res.data;
+        console.log(this.studios);
+      });
 
-    axios('http://localhost:8080/services').then((res) => {
-      this.services = res.data;
-      console.log(this.services);
-    });
+    axios('http://localhost:8080/services')
+      .then((res) => {
+        this.services = res.data;
+        console.log(this.services);
+      });
   },
   data() {
     return {
