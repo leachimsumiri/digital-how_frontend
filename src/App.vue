@@ -1,18 +1,17 @@
 <template>
   <div id="app">
-    companies: {{companies}}
-    <br>
-    studios: {{studios}}}
+    <Companies :data="companies"></Companies>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Companies from './components/Companies.vue';
 
 export default {
   name: 'App',
   components: {
-
+    Companies,
   },
   mounted() {
     axios('http://localhost:8080/companies').then((res) => {
@@ -24,11 +23,17 @@ export default {
       this.studios = res.data;
       console.log(this.studios);
     });
+
+    axios('http://localhost:8080/services').then((res) => {
+      this.services = res.data;
+      console.log(this.services);
+    });
   },
   data() {
     return {
       companies: [],
       studios: [],
+      services: [],
     };
   },
 };

@@ -1,12 +1,24 @@
 import { shallowMount } from '@vue/test-utils';
-import HelloWorld from '@/components/HelloWorld.vue';
+import Companies from '@/components/Companies.vue';
+import { BTable } from 'bootstrap-vue';
 
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message';
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg },
+describe('Companies.vue', () => {
+  it('renders subcomponents', () => {
+    const testProps = {
+      data: [{
+        id: 1,
+        description: 'Moon Studios',
+        url: 'https://www.orithegame.com/moon-studios/',
+        association: false,
+      }],
+    };
+
+    const wrapper = shallowMount(Companies, {
+      propsData: { testProps },
     });
-    expect(wrapper.text()).toMatch(msg);
+
+    const tableWrapper = wrapper.findComponent(BTable);
+
+    expect(tableWrapper.exists()).toBe(true);
   });
 });
