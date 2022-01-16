@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    {{welcome}}
     companies: {{companies}}
+    <br>
+    studios: {{studios}}}
   </div>
 </template>
 
@@ -14,20 +15,20 @@ export default {
 
   },
   mounted() {
-    axios(`http://localhost:8080/hello?name=${this.name}`).then((res) => {
-      this.welcome = res.data;
+    axios('http://localhost:8080/companies').then((res) => {
+      this.companies = res.data;
+      console.log(this.companies);
     });
 
-    axios('http://localhost:8080/companies').then((res) => {
-      console.log(res);
-      this.companies = res.data;
+    axios('http://localhost:8080/studios').then((res) => {
+      this.studios = res.data;
+      console.log(this.studios);
     });
   },
   data() {
     return {
-      welcome: '',
-      name: 'Leachim',
       companies: [],
+      studios: [],
     };
   },
 };
