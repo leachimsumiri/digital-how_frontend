@@ -11,7 +11,12 @@ module.exports = {
     filename: 'bundle.js',
   },
   devServer: {
-    static: path.resolve(__dirname, './dist'),
+    static: {
+      directory: path.join(__dirname, './assets'),
+    },
+    devMiddleware: {
+      writeToDisk: true,
+    },
   },
   plugins: [
     new CleanWebpackPlugin(),

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Companies :data="companies"></Companies>
+    <Companies :data="companies" :busy="companiesTableBusy"></Companies>
   </div>
 </template>
 
@@ -17,6 +17,7 @@ export default {
     axios('http://localhost:8080/companies').then((res) => {
       this.companies = res.data;
       console.log(this.companies);
+      this.companiesTableBusy = false;
     });
 
     axios('http://localhost:8080/studios').then((res) => {
@@ -32,6 +33,7 @@ export default {
   data() {
     return {
       companies: [],
+      companiesTableBusy: true,
       studios: [],
       services: [],
     };

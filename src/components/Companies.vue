@@ -4,8 +4,8 @@
     <BTable
       striped
       hover
-      head-variant="dark"
-      :items="data"
+      :busy="busy"
+      :items="items"
       :fields="fields"
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc">
@@ -14,6 +14,9 @@
           <b-spinner class="align-middle"></b-spinner>
           <strong>Loading...</strong>
         </div>
+      </template>
+      <template #cell(logo)="data">
+        <img :src="data.item.logo" alt="company logo" height="30">
       </template>
     </BTable>
     <div>
@@ -30,13 +33,36 @@ export default {
   name: 'Companies',
   props: [
     'data',
+    'busy',
   ],
   components: {
     BTable,
   },
+  computed: {
+    items() {
+      const items = this.data;
+
+      items.forEach((item) => {
+        // eslint-disable-next-line no-param-reassign
+        item.logo = this.resolveCompanyLogoPath(item.description);
+      });
+
+      return items;
+    },
+  },
+  methods: {
+    resolveCompanyLogoPath(companyDescription) {
+      const RE = / /g;
+      return `/companies/logos/${companyDescription.replace(RE, '_').toLowerCase()}.png`;
+    },
+  },
   data() {
     return {
       fields: [
+        {
+          key: 'logo',
+          sortable: false,
+        },
         {
           key: 'description',
           sortable: true,
@@ -58,10 +84,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #root {
   display: flex;
   flex: 1;
   flex-direction: column;
+}
+
+td {
+  vertical-align: baseline !important;
 }
 </style>

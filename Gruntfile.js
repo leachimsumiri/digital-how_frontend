@@ -1,8 +1,8 @@
-const gruntTasks = require('load-grunt-tasks');
-
 module.exports = (grunt) => {
   const config = grunt.file.readJSON('package.json');
   const development = grunt.option('mode') !== 'production';
+  // eslint-disable-next-line global-require
+  const gruntTasks = require('load-grunt-tasks');
 
   gruntTasks(grunt);
 
