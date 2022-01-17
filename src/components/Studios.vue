@@ -1,11 +1,11 @@
 <template>
-  <div class="companies">
-    <h1>Companies</h1>
+  <div class="studios">
+    <h1>Studios</h1>
     <BTable
       striped
       hover
       :busy="busy"
-      :items="items"
+      :items="data"
       :fields="fields"
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc">
@@ -14,9 +14,6 @@
           <b-spinner class="align-middle"></b-spinner>
           <strong>Loading...</strong>
         </div>
-      </template>
-      <template #cell(logo)="data">
-        <img :src="data.item.logo" alt="company logo" height="30">
       </template>
     </BTable>
     <div>
@@ -30,7 +27,7 @@
 import { BTable } from 'bootstrap-vue';
 
 export default {
-  name: 'Companies',
+  name: 'Studios',
   props: [
     'data',
     'busy',
@@ -38,44 +35,24 @@ export default {
   components: {
     BTable,
   },
-  computed: {
-    items() {
-      const items = this.data;
-
-      items.forEach((item) => {
-        // eslint-disable-next-line no-param-reassign
-        item.logo = this.resolveCompanyLogoPath(item.description);
-      });
-
-      return items;
-    },
-  },
-  methods: {
-    resolveCompanyLogoPath(companyDescription) {
-      const RE = / /g;
-      return `/companies/logos/${companyDescription.replace(RE, '_')
-        .toLowerCase()}.png`;
-    },
-  },
   data() {
     return {
       fields: [
-        {
-          key: 'logo',
-          sortable: false,
-        },
         {
           key: 'description',
           sortable: true,
         },
         {
-          key: 'url',
+          key: 'address',
           sortable: true,
         },
         {
-          key: 'association',
-          label: 'Is Association',
-          sortable: true,
+          key: 'latitude',
+          sortable: false,
+        },
+        {
+          key: 'longitude',
+          sortable: false,
         },
       ],
       sortBy: 'description',
@@ -86,7 +63,7 @@ export default {
 </script>
 
 <style scoped>
-.companies {
+.studios {
   margin-top: 60px;
 }
 </style>
