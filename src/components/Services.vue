@@ -5,6 +5,7 @@
       striped
       hover
       stacked="lg"
+      :filter="filterInput"
       :busy="busy"
       :items="data"
       :fields="fields"
@@ -20,6 +21,7 @@
         <span v-if="data.item.companies">{{displayCompanies(data.item.companies)}}</span>
       </template>
     </BTable>
+    Filter: <input type="text" v-model="filterInput" />
     <div>
       Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
       <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b>
@@ -65,6 +67,7 @@ export default {
       ],
       sortBy: 'description',
       sortDesc: false,
+      filterInput: '',
     };
   },
 };
