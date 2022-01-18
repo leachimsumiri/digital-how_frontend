@@ -4,6 +4,7 @@
     <BTable
       striped
       hover
+      stacked="lg"
       :busy="busy"
       :items="items"
       :fields="fields"
