@@ -17,7 +17,7 @@
         </div>
       </template>
       <template #cell(companies)="data">
-        {{displayCompanies(data.item.companies)}}
+        <span v-if="data.item.companies">{{displayCompanies(data.item.companies)}}</span>
       </template>
     </BTable>
     <div>

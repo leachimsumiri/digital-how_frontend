@@ -4,6 +4,9 @@
     <Studios :data="studios" :busy="studiosTableBusy"></Studios>
     <Services :data="services" :busy="servicesTableBusy"></Services>
     <SocialNetworks :data="socialNetworks" :busy="socialNetworksTableBusy"></SocialNetworks>
+
+    <h1 style="margin-top: 60px;">Studio Map</h1>
+    <div id="map"></div>
   </div>
 </template>
 
@@ -35,6 +38,7 @@ export default {
         this.studios = res.data;
         console.log(this.studios);
         this.studiosTableBusy = false;
+        this.initMap(1, 1);
       });
 
     axios('http://localhost:8080/service-types')
@@ -66,6 +70,39 @@ export default {
         this.socialNetworksTableBusy = false;
       });
   },
+  methods: {
+    initMap(lat, long) {
+      if (this.map) return;
+
+      this.setMapView(lat, long);
+
+      // eslint-disable-next-line no-undef
+      L.tileLayer(
+        'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: 'mapbox/streets-v11',
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken: 'pk.eyJ1IjoibGVhY2hpbSIsImEiOiJja3dmbGw1eHowM3FpMm9tbGYwODBjc252In0.1Uy0WQq36UaEURZJPUkB0Q',
+        },
+      ).addTo(this.map);
+
+      this.setMapLocationMarker();
+    },
+    setMapView(lat, long) {
+      // eslint-disable-next-line no-undef
+      this.map = L.map('map').setView([lat, long], 2);
+    },
+    setMapLocationMarker() {
+      // eslint-disable-next-line no-undef
+      this.studios.forEach((studio) => L.marker([studio.latitude, studio.longitude], {
+        title: studio.description,
+      }).addTo(this.map));
+    },
+  },
   data() {
     return {
       companies: [],
@@ -76,6 +113,7 @@ export default {
       servicesTableBusy: true,
       socialNetworks: [],
       socialNetworksTableBusy: true,
+      map: null,
     };
   },
 };
@@ -96,5 +134,10 @@ export default {
 
 td {
   vertical-align: baseline !important;
+}
+
+#map {
+  width: 100%;
+  height: 800px;
 }
 </style>
