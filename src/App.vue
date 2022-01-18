@@ -39,9 +39,24 @@ export default {
 
     axios('http://localhost:8080/service-types')
       .then((res) => {
-        this.services = res.data;
         console.log(this.services);
-        this.servicesTableBusy = false;
+
+        const promise = new Promise((resolve) => {
+          res.data.forEach((service, index) => {
+            axios(`http://localhost:8080/companiesWithService?service=${service.description}`)
+              .then((res2) => {
+                // eslint-disable-next-line no-param-reassign
+                service.companies = res2.data;
+
+                if (index === res.data.length - 1) resolve();
+              });
+          });
+        });
+
+        promise.then(() => {
+          this.services = res.data;
+          this.servicesTableBusy = false;
+        });
       });
 
     axios('http://localhost:8080/social-network-types')

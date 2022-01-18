@@ -15,6 +15,9 @@
           <strong>Loading...</strong>
         </div>
       </template>
+      <template #cell(company)="data">
+        <span>{{data.item.company.description}}</span>
+      </template>
     </BTable>
     <div>
       Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
@@ -53,6 +56,10 @@ export default {
         {
           key: 'longitude',
           sortable: false,
+        },
+        {
+          key: 'company',
+          sortable: true,
         },
       ],
       sortBy: 'description',

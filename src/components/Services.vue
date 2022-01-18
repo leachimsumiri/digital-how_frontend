@@ -15,6 +15,9 @@
           <strong>Loading...</strong>
         </div>
       </template>
+      <template #cell(companies)="data">
+        {{displayCompanies(data.item.companies)}}
+      </template>
     </BTable>
     <div>
       Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
@@ -35,12 +38,28 @@ export default {
   components: {
     BTable,
   },
+  methods: {
+    displayCompanies(companies) {
+      let res = '';
+
+      companies.forEach((item, index) => {
+        res += item;
+        if (index < companies.length - 1) res += ', ';
+      });
+
+      return res;
+    },
+  },
   data() {
     return {
       fields: [
         {
           key: 'description',
           sortable: true,
+        },
+        {
+          key: 'companies',
+          sortable: false,
         },
       ],
       sortBy: 'description',
