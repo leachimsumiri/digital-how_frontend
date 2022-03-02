@@ -64,6 +64,10 @@ export default {
           key: 'company',
           sortable: true,
         },
+        {
+          key: 'city',
+          sortable: true,
+        },
       ],
       sortBy: 'description',
       sortDesc: false,

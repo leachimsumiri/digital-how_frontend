@@ -137,7 +137,8 @@ td {
 }
 
 #map {
-  width: 100%;
+  width: 90%;
   height: 800px;
+  margin: auto;
 }
 </style>
