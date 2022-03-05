@@ -20,6 +20,16 @@
       <template #cell(company)="data">
         <span>{{data.item.company.description}}</span>
       </template>
+      <template #cell(city)="data">
+        <span v-if="data.item.city">
+          {{data.item.city.description}}
+        </span>
+      </template>
+      <template #cell(country)="data">
+        <span v-if="data.item.city && data.item.city.country">
+          {{data.item.city.country.description}}
+        </span>
+      </template>
     </BTable>
     Filter: <input type="text" v-model="filterInput" />
     <div>
@@ -66,6 +76,10 @@ export default {
         },
         {
           key: 'city',
+          sortable: true,
+        },
+        {
+          key: 'country',
           sortable: true,
         },
       ],
