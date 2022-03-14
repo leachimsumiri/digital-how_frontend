@@ -2,9 +2,12 @@
   <div class="studios">
     <h1>Studios</h1>
     <BTable
+      id="studiosTable"
       striped
       hover
       stacked="lg"
+      :current-page="currentPage"
+      :per-page="perPage"
       :filter="filterInput"
       :busy="busy"
       :items="data"
@@ -18,7 +21,7 @@
         </div>
       </template>
       <template #cell(company)="data">
-        <span>{{data.item.company.description}}</span>
+        <span v-if="data.item.company">{{data.item.company.description}}</span>
       </template>
       <template #cell(city)="data">
         <span v-if="data.item.city">
@@ -31,6 +34,12 @@
         </span>
       </template>
     </BTable>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="data.length"
+      :per-page="perPage"
+      aria-controls="studiosTable"
+    ></b-pagination>
     Filter: <input type="text" v-model="filterInput" />
     <div>
       Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
@@ -86,6 +95,8 @@ export default {
       sortBy: 'description',
       sortDesc: false,
       filterInput: '',
+      perPage: 10,
+      currentPage: 1,
     };
   },
 };

@@ -35,6 +35,16 @@ export default {
 
     axios('http://localhost:8080/studios')
       .then((res) => {
+        for (const studio of res.data) {
+          if (studio.company && studio.company.studios && studio.company.studios.length > 1) {
+            for (const falselyNestedStudio of studio.company.studios) {
+              if (typeof falselyNestedStudio === 'object') {
+                console.log(falselyNestedStudio);
+                res.data.push(falselyNestedStudio);
+              }
+            }
+          }
+        }
         this.studios = res.data;
         console.log(this.studios);
         this.studiosTableBusy = false;
@@ -98,9 +108,14 @@ export default {
     },
     setMapLocationMarker() {
       // eslint-disable-next-line no-undef
-      this.studios.forEach((studio) => L.marker([studio.latitude, studio.longitude], {
-        title: studio.description,
-      }).addTo(this.map));
+      this.studios.forEach((studio) => {
+        if (studio.latitude && studio.longitude) {
+          L.marker([studio.latitude, studio.longitude], {
+            title: studio.description,
+          })
+            .addTo(this.map);
+        }
+      });
     },
   },
   data() {
@@ -140,5 +155,9 @@ td {
   width: 90%;
   height: 800px;
   margin: auto;
+}
+
+.pagination {
+  justify-content: center;
 }
 </style>

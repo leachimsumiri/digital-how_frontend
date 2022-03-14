@@ -2,9 +2,12 @@
   <div class="companies">
     <h1>Companies</h1>
     <BTable
+      id="companyTable"
       striped
       hover
       stacked="lg"
+      :current-page="currentPage"
+      :per-page="perPage"
       :filter="filterInput"
       :busy="busy"
       :items="items"
@@ -18,7 +21,7 @@
         </div>
       </template>
       <template #cell(logo)="data">
-        <img :src="data.item.logo" alt="company logo" height="30">
+        <!--<img :src="data.item.logo" alt="company logo" height="30">-->
       </template>
       <template #cell(url)="data">
         <a :href="data.item.url" target="_blank">Homepage</a>
@@ -47,6 +50,12 @@
         </component>
       </template>
     </BTable>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="data.length"
+      :per-page="perPage"
+      aria-controls="companyTable"
+    ></b-pagination>
     Filter: <input type="text" v-model="filterInput" />
     <div>
       Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
@@ -127,10 +136,10 @@ export default {
   data() {
     return {
       fields: [
-        {
+        /* {
           key: 'logo',
           sortable: false,
-        },
+        }, */
         {
           key: 'description',
           sortable: true,
@@ -139,11 +148,11 @@ export default {
           key: 'url',
           sortable: true,
         },
-        {
+        /* {
           key: 'association',
           label: 'Is Association',
           sortable: true,
-        },
+        }, */
         {
           key: 'socialNetworks',
           sortable: true,
@@ -160,12 +169,14 @@ export default {
       sortBy: 'description',
       sortDesc: false,
       filterInput: '',
+      perPage: 10,
+      currentPage: 1,
     };
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .companies {
   margin-top: 60px;
 }
