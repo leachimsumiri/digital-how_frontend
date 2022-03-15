@@ -34,19 +34,10 @@ export default {
       });
 
     axios('http://localhost:8080/studios')
-      .then((res) => {
-        for (const studio of res.data) {
-          if (studio.company && studio.company.studios && studio.company.studios.length > 1) {
-            for (const falselyNestedStudio of studio.company.studios) {
-              if (typeof falselyNestedStudio === 'object') {
-                console.log(falselyNestedStudio);
-                res.data.push(falselyNestedStudio);
-              }
-            }
-          }
-        }
+      .then(async (res) => {
         this.studios = res.data;
         console.log(this.studios);
+        this.refetchDuplicateCompanies(res.data);
         this.studiosTableBusy = false;
         this.initMap(1, 1);
       });
@@ -116,6 +107,14 @@ export default {
             .addTo(this.map);
         }
       });
+    },
+    async refetchDuplicateCompanies(data) {
+      for (let studio of data) {
+        if (typeof studio.company !== 'object') {
+          const refetchedCompany = await axios.get(`http://localhost:8080/company?id=${studio.company}`);
+          studio.company = refetchedCompany.data;
+        }
+      }
     },
   },
   data() {
