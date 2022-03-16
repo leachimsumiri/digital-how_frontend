@@ -36,10 +36,10 @@
         </component>
       </template>
       <template #cell(studios)="data">
-        <component v-for="studio in createStudioComponents(data.item.studios)"
+        <component v-for="(studio, index) in createStudioComponents(data.item.studios)"
                    :key="studio.id"
                    :is="studio.type">
-          {{studio.text}}
+          <span v-if="index">, </span>{{studio.text}}
         </component>
       </template>
       <template #cell(services)="data">
@@ -114,7 +114,7 @@ export default {
       data.forEach((item) => {
         res.push({
           type: 'span',
-          text: `${item.description}: ${item.address}`,
+          text: `${item.city.description}`,
         });
       });
 
