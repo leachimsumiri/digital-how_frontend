@@ -93,9 +93,9 @@ export default {
         },
       ],
       sortBy: 'description',
-      sortDesc: false,
+      sortDesc: true,
       filterInput: '',
-      perPage: 10,
+      perPage: 5,
       currentPage: 1,
     };
   },

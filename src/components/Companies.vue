@@ -20,19 +20,22 @@
           <strong>Loading...</strong>
         </div>
       </template>
-      <template #cell(logo)="data">
-        <!--<img :src="data.item.logo" alt="company logo" height="30">-->
-      </template>
-      <template #cell(url)="data">
-        <a :href="data.item.url" target="_blank">Homepage</a>
+      <template #cell(description)="data">
+        <img :src="data.item.logo" height="30" @error="replaceImgByDefault"
+             class="cursor-pointer" @click="redirectToHomepage(data.item.url)">
+        <span class="cursor-pointer" @click="redirectToHomepage(data.item.url)">
+          {{data.item.description}}</span>
       </template>
       <template #cell(socialNetworks)="data">
-        <component v-for="socialNetwork in createSocialNetworkComponents(data.item.socialNetworks)"
+        <component v-for=
+                     "(socialNetwork, index)
+                     in
+                     createSocialNetworkComponents(data.item.socialNetworks)"
                    :key="socialNetwork.url"
                    :is="socialNetwork.type"
                    :href="socialNetwork.url"
                    :target="socialNetwork.target">
-          {{socialNetwork.text}}
+          <span v-if="index">, </span>{{socialNetwork.text}}
         </component>
       </template>
       <template #cell(studios)="data">
@@ -132,20 +135,18 @@ export default {
 
       return res;
     },
+    replaceImgByDefault(e) {
+      e.target.className = e.target.className.concat('d-none');
+    },
+    redirectToHomepage(url) {
+      window.open(url, '_blank') || window.location.replace(url);
+    },
   },
   data() {
     return {
       fields: [
-        /* {
-          key: 'logo',
-          sortable: false,
-        }, */
         {
           key: 'description',
-          sortable: true,
-        },
-        {
-          key: 'url',
           sortable: true,
         },
         /* {
@@ -166,10 +167,10 @@ export default {
           sortable: true,
         },
       ],
-      sortBy: 'description',
-      sortDesc: false,
+      sortBy: 'services',
+      sortDesc: true,
       filterInput: '',
-      perPage: 10,
+      perPage: 5,
       currentPage: 1,
     };
   },
@@ -179,5 +180,9 @@ export default {
 <style scoped lang="scss">
 .companies {
   margin-top: 60px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>
