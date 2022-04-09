@@ -1,31 +1,44 @@
 <template>
   <div id="app">
+    <!--
     <Companies :data="companies" :busy="companiesTableBusy"></Companies>
     <Studios :data="studios" :busy="studiosTableBusy"></Studios>
     <Services :data="services" :busy="servicesTableBusy"></Services>
     <SocialNetworks :data="socialNetworks" :busy="socialNetworksTableBusy"></SocialNetworks>
+    -->
 
+    <Cities :data="cities" :busy="citiesTableBusy"></Cities>
+
+    <!--
     <h1 style="margin-top: 60px;">Studio Map</h1>
     <div id="map"></div>
+    -->
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+/*
 import Companies from './components/Companies.vue';
 import Studios from './components/Studios.vue';
 import Services from './components/Services.vue';
 import SocialNetworks from './components/SocialNetworks.vue';
+*/
+import Cities from './components/Cities.vue';
 
 export default {
   name: 'App',
   components: {
-    Companies,
-    Studios,
-    Services,
-    SocialNetworks,
+    Cities,
   },
   mounted() {
+    axios('http://localhost:8080/cities')
+      .then((res) => {
+        this.cities = res.data;
+        console.log(this.cities);
+        this.citiesTableBusy = false;
+      });
+    /*
     axios('http://localhost:8080/companies')
       .then((res) => {
         this.companies = res.data;
@@ -70,64 +83,12 @@ export default {
         console.log(this.socialNetworks);
         this.socialNetworksTableBusy = false;
       });
-  },
-  methods: {
-    initMap(lat, long) {
-      if (this.map) return;
-
-      this.setMapView(lat, long);
-
-      // eslint-disable-next-line no-undef
-      L.tileLayer(
-        'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
-        {
-          attribution:
-            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-          maxZoom: 18,
-          id: 'mapbox/streets-v11',
-          tileSize: 512,
-          zoomOffset: -1,
-          accessToken: 'pk.eyJ1IjoibGVhY2hpbSIsImEiOiJja3dmbGw1eHowM3FpMm9tbGYwODBjc252In0.1Uy0WQq36UaEURZJPUkB0Q',
-        },
-      ).addTo(this.map);
-
-      this.setMapLocationMarker();
-    },
-    setMapView(lat, long) {
-      // eslint-disable-next-line no-undef
-      this.map = L.map('map').setView([lat, long], 2);
-    },
-    setMapLocationMarker() {
-      // eslint-disable-next-line no-undef
-      this.studios.forEach((studio) => {
-        if (studio.latitude && studio.longitude) {
-          L.marker([studio.latitude, studio.longitude], {
-            title: studio.description,
-          })
-            .addTo(this.map);
-        }
-      });
-    },
-    async refetchDuplicateCompanies(data) {
-      for (let studio of data) {
-        if (typeof studio.company !== 'object') {
-          const refetchedCompany = await axios.get(`http://localhost:8080/company?id=${studio.company}`);
-          studio.company = refetchedCompany.data;
-        }
-      }
-    },
+     */
   },
   data() {
     return {
-      companies: [],
-      companiesTableBusy: true,
-      studios: [],
-      studiosTableBusy: true,
-      services: [],
-      servicesTableBusy: true,
-      socialNetworks: [],
-      socialNetworksTableBusy: true,
-      map: null,
+      cities: [],
+      citiesTableBusy: true,
     };
   },
 };
