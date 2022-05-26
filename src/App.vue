@@ -32,12 +32,27 @@ export default {
     Cities,
   },
   mounted() {
+    const worker = new Worker('worker.js');
+    const event = {
+      page: 3,
+      size: 10,
+    };
+
+    worker.onmessage = (e) => {
+      this.cities = e.data;
+      this.citiesTableBusy = false;
+    };
+
+    worker.postMessage(event);
+
+    /*
     axios('http://localhost:8080/cities')
       .then((res) => {
         this.cities = res.data;
         console.log(this.cities);
         this.citiesTableBusy = false;
       });
+     */
     /*
     axios('http://localhost:8080/companies')
       .then((res) => {

@@ -34,8 +34,5 @@ module.exports = (grunt) => {
   grunt.initConfig(gruntConfig);
 
   grunt.registerTask('default', ['clean']);
-
-  if (!development) {
-    grunt.registerTask('default', ['concat', 'uglify']);
-  }
+  grunt.registerTask('default', ['concat', 'uglify']);
 };
