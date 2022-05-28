@@ -32,18 +32,43 @@ export default {
     Cities,
   },
   mounted() {
+    const PAGE_SIZE = 10;
+
     const worker = new Worker('worker.js');
+
     const event = {
-      page: 3,
-      size: 10,
+      page: 1,
+      pageSize: PAGE_SIZE,
     };
 
     worker.onmessage = (e) => {
-      this.cities = e.data;
-      this.citiesTableBusy = false;
+      if (this.cities.length) {
+        this.cities.push(...e.data);
+      } else {
+        this.cities = e.data;
+      }
+
+      if (this.citiesTableBusy !== false) this.citiesTableBusy = false;
+
+      if (event.page < this.totalPages) {
+        event.page += 1;
+        worker.postMessage(event);
+      }
     };
 
-    worker.postMessage(event);
+    axios(`http://localhost:8080/citiesPages?size=${PAGE_SIZE}`)
+      .then((res) => {
+        this.totalPages = res.data;
+
+        worker.postMessage(event);
+      });
+
+    /*
+    axios('http://localhost:8080/citiesCount')
+      .then((res) => {
+        console.log(res.data);
+      });
+*/
 
     /*
     axios('http://localhost:8080/cities')
@@ -104,6 +129,7 @@ export default {
     return {
       cities: [],
       citiesTableBusy: true,
+      totalPages: 0,
     };
   },
 };

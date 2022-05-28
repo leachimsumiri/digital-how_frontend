@@ -14,6 +14,8 @@
       striped
       hover
       stacked="lg"
+      :per-page="perPage"
+      :current-page="currentPage"
       :busy="busy"
       :items="data">
       <template #table-busy>
@@ -23,6 +25,12 @@
         </div>
       </template>
     </BTable>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="data.length"
+      :per-page="perPage"
+      aria-controls="cityTable"
+    ></b-pagination>
     <!--
     Filter: <input type="text" v-model="filterInput" />
     <div>
@@ -44,6 +52,12 @@ export default {
   ],
   components: {
     BTable,
+  },
+  data() {
+    return {
+      perPage: 10,
+      currentPage: 1,
+    };
   },
 };
 </script>

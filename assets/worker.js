@@ -14,5 +14,6 @@ function getCitiesSequentially(page, size) {
 
 // eslint-disable-next-line no-restricted-globals
 addEventListener('message', (e) => {
-  getCitiesSequentially(e.data.page, e.data.size);
+  console.log(`worker got event with page ${e.data.page}`);
+  getCitiesSequentially(e.data.page, e.data.pageSize);
 });
